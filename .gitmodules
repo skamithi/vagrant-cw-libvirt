@@ -1,0 +1,3 @@
+[submodule "ccw-wbenchvm-ansible"]
+	path = ccw-wbenchvm-ansible
+	url = https://github.com/CumulusNetworks/ccw-wbenchvm-ansible.git
