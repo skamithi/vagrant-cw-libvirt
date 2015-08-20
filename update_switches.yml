@@ -1,0 +1,10 @@
+---
+- hosts: all
+  sudo: True
+  tasks:
+    - name: add updated renaming script to Vm
+      copy: src=rename_eth_swp.new dest=/etc/init.d/rename_eth_swp chmod=755
+
+    - name: copy appropriate ethernet remap
+      copy: src=mapping/{{ switch_category }} dest=/etc/default/eth_remap
+

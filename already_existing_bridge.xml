@@ -1,0 +1,6 @@
+<network>
+  <name>existing-bridge</name>
+  <forward mode="bridge"/>
+  <bridge name="br0" />
+</network>
+

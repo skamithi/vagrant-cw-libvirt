@@ -1,0 +1,76 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          rename_eth_swp
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# X-Start-Before:    ifupdown arp_refresh
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Rename eth interfaces to swp
+### END INIT INFO
+
+# Author: Michael Fine <mfine@cumulusnetworks.com>
+#
+# Please remove the "Author" lines above and replace them
+# with your own name if you copy and modify this script.
+
+PATH=/sbin:/bin:/usr/bin
+
+NAME=rename_eth_swp
+SCRIPTNAME=/etc/init.d/$NAME
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+if [ -e /etc/default/eth_remap ]; then
+  . /etc/default/eth_remap
+else
+  REMAP_METHOD="simple"
+fi
+
+simple_remap() {
+	interfaces=`ip link show | sed -n 's/.*\(eth[1-9][0-9]*\):.*/\1/p'`
+	for i in $interfaces ; do
+	    num=`echo $i | sed -n 's/.*eth\(.*\).*/\1/p'`
+	    ip link set eth$num name swp$num
+	done
+}
+
+complex_remap() {
+  for intf in $MAP;do
+      from=`echo $intf | awk 'BEGIN { FS="=" }; { print $1 }'`
+      to=`echo $intf | awk 'BEGIN { FS="=" }; { print $2 }'`
+	    ip link set $from name $to
+  done
+}
+
+do_start() {
+  if [ "x$REMAP_METHOD" == "xmapped" ]; then
+      complex_remap
+  else
+      simple_remap
+  fi
+}
+
+case "$1" in
+  start|"")
+	log_action_begin_msg "Renaming interfaces"
+	do_start
+	log_action_end_msg 0
+	;;
+  restart|reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  stop)
+	# No-op
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME [start|stop]" >&2
+	exit 3
+	;;
+esac
+
+:
