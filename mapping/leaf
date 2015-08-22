@@ -11,5 +11,6 @@ MAP="eth1=swp1s0
      eth4=swp1s3
      eth5=swp17
      eth6=swp18
+     eth7=swp32s0
      eth8=swp32s1
-     eth9=swp32s0
+"
