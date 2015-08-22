@@ -3,8 +3,40 @@
   sudo: True
   tasks:
     - name: add updated renaming script to Vm
-      copy: src=rename_eth_swp.new dest=/etc/init.d/rename_eth_swp chmod=755
+      copy: src=rename_eth_swp.new dest=/etc/init.d/rename_eth_swp mode=755
 
     - name: copy appropriate ethernet remap
-      copy: src=mapping/{{ switch_category }} dest=/etc/default/eth_remap
+      copy: src="mapping/{{inventory_hostname | regex_replace('\d+', '')}}" dest=/etc/default/eth_remap
+      register: eth_remap
+      notify: reboot switch vm
+
+    - name: capture hostname into another variable
+      debug: msg={{ inventory_hostname }}
+      register: sw_hostname
+
+  handlers:
+    - name: reboot switch vm
+      command: reboot
+
+
+- hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+      - name: wait for vm to come back online
+        local_action: wait_for port=22 host="{{ ansible_ssh_host }}" delay=10
+        when: eth_remap.changed == True
+
+      - name: check if hostname is copied
+        debug: msg="{{ sw_hostname.msg }}"
+
+      - name: get the mac address of the first interface
+        shell: "virsh domiflist vagrant-cw-libvirt_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
+        register: virsh_output
+
+      - name: remove first interface
+        shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
+
+
+
 
