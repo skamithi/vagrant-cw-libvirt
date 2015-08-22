@@ -22,7 +22,12 @@ leaf1_swp32s0_svr1 = [8013, 9013]
 leaf1_swp32s1_svr2 = [8014, 9014]
 leaf2_swp32s0_svr2 = [8015, 9015]
 leaf2_swp32s1_svr1 = [8016, 9016]
-
+vm_mac = {
+  'spine1' => '12:11:22:33:44:55',
+  'spine2' => '12:11:22:33:44:66',
+  'leaf1' =>  '12:11:22:33:44:77',
+  'leaf2' =>  '12:11:22:33:44:88'
+}
 Vagrant.configure(2) do |config|
 
   # increase nic adapter count to be greater than 8
@@ -66,7 +71,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => vm_mac['spine1']
     # swp17 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -116,7 +122,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => vm_mac['spine2']
     # swp17 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -166,7 +173,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => vm_mac['leaf1']
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -226,7 +234,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => vm_mac['leaf2']
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',

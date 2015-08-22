@@ -37,6 +37,10 @@
       - name: remove first interface
         shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
 
+      - name: shutdown vm
+        shell:  "virsh destroy vagrant-cw-libvirt_{{ sw_hostname.msg }}"
 
+      - name: bring back up vm
+        shell: "virsh start vagrant-cw-libvirt_{{ sw_hostname.msg }}"
 
 
