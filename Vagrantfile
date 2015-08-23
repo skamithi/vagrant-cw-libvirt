@@ -57,6 +57,9 @@ Vagrant.configure(2) do |config|
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
     end
+    node.vm.provision :ansible do |ansible|
+      ansible.playbook = 'playbooks/wbenchvm_extra.yml'
+    end
   end
 
   config.vm.define :spine1 do |node|
@@ -106,7 +109,7 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_port => sp1_swp52_leaf2[0],
       :libvirt__tunnel_source_port => sp1_swp52_leaf2[1]
     node.vm.provision :ansible do |ansible|
-      ansible.playbook = 'update_switches.yml'
+      ansible.playbook = 'playbooks/update_switches.yml'
     end
   end
 
@@ -157,7 +160,7 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_port => sp2_swp52_leaf1[0],
       :libvirt__tunnel_source_port => sp2_swp52_leaf1[1]
     node.vm.provision :ansible do |ansible|
-      ansible.playbook = 'update_switches.yml'
+      ansible.playbook = 'playbooks/update_switches.yml'
     end
   end
 
@@ -218,7 +221,7 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_port => leaf1_swp32s1_svr2[0],
       :libvirt__tunnel_source_port => leaf1_swp32s1_svr2[1]
     node.vm.provision :ansible do |ansible|
-      ansible.playbook = 'update_switches.yml'
+      ansible.playbook = 'playbooks/update_switches.yml'
     end
   end
 
@@ -278,7 +281,7 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_port => leaf2_swp32s1_svr1[0],
       :libvirt__tunnel_source_port => leaf2_swp32s1_svr1[1]
     node.vm.provision :ansible do |ansible|
-      ansible.playbook = 'update_switches.yml'
+      ansible.playbook = 'playbooks/update_switches.yml'
     end
   end
 
