@@ -14,6 +14,9 @@
       debug: msg={{ inventory_hostname }}
       register: sw_hostname
 
+    - name: copy ssh key to root account
+      authorized_key: user=root key="{{ lookup('file', './deploy_key_id_rsa.pub') }}"
+
   handlers:
     - name: reboot switch vm
       command: reboot

@@ -6,3 +6,6 @@
         lineinfile:
           dest=/home/vagrant/.bashrc
           line="cd /home/cumulus;sudo su -- cumulus"
+
+      - name: copy deploy ssh key to ansible server
+        fetch:  src=/home/cumulus/.ssh/id_rsa.pub dest=./deploy_key_id_rsa.pub flat=yes
