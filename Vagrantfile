@@ -65,13 +65,12 @@ Vagrant.configure(2) do |config|
       :libvirt__forward_mode => 'veryisolated',
       :libvirt__dhcp_enabled => false,
       :libvirt__network_name => 'switch_mgmt'
-    #node.vm.provision :ansible do |ansible|
-    #  ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
-    #  ansible.extra_vars = wbench_hosts
-    #end
+    node.vm.provision :ansible do |ansible|
+      ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
+      ansible.extra_vars = wbench_hosts
+    end
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/wbenchvm_extra.yml'
-      ansible.start_at_task = "when vagrant up is done, log directly into cumulus user"
     end
   end
 
