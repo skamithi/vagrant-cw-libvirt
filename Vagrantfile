@@ -4,6 +4,8 @@
 #
 # udp port mappings. Messy. Can be simplified
 # with some graph action..maybe using ruby-graphviz?
+require 'json'
+
 sp1_swp17_sp2 = [8000, 9000]
 sp1_swp18_sp2 = [8001, 9001]
 sp1_swp49_leaf1 = [8002, 9002]
@@ -22,12 +24,21 @@ leaf1_swp32s0_svr1 = [8013, 9013]
 leaf1_swp32s1_svr2 = [8014, 9014]
 leaf2_swp32s0_svr2 = [8015, 9015]
 leaf2_swp32s1_svr1 = [8016, 9016]
-vm_mac = {
-  'spine1' => '12:11:22:33:44:55',
-  'spine2' => '12:11:22:33:44:66',
-  'leaf1' =>  '12:11:22:33:44:77',
-  'leaf2' =>  '12:11:22:33:44:88'
-}
+
+wbench_hostlist = [:spine1, :spine2, :leaf1, :leaf2]
+last_ip_octet = 100
+last_mac_octet = 11
+wbench_hosts = { :wbench_hosts => {} }
+
+wbench_hostlist.each do |hostentry|
+  wbench_hosts[:wbench_hosts][hostentry] = {
+    :ip => '192.168.0.' + last_ip_octet.to_s,
+    :mac => '12:11:22:33:44:' + last_mac_octet.to_s
+  }
+  last_mac_octet += 1
+  last_ip_octet += 1
+end
+
 Vagrant.configure(2) do |config|
 
   # increase nic adapter count to be greater than 8
@@ -54,11 +65,13 @@ Vagrant.configure(2) do |config|
       :libvirt__forward_mode => 'veryisolated',
       :libvirt__dhcp_enabled => false,
       :libvirt__network_name => 'switch_mgmt'
-    node.vm.provision :ansible do |ansible|
-      ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
-    end
+    #node.vm.provision :ansible do |ansible|
+    #  ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
+    #  ansible.extra_vars = wbench_hosts
+    #end
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/wbenchvm_extra.yml'
+      ansible.start_at_task = "when vagrant up is done, log directly into cumulus user"
     end
   end
 
@@ -75,7 +88,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => vm_mac['spine1']
+        :mac => wbench_hosts[:wbench_hosts][:spine1][:mac]
     # swp17 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -126,7 +139,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => vm_mac['spine2']
+        :mac =>  wbench_hosts['spine2']['mac']
     # swp17 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -177,7 +190,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => vm_mac['leaf1']
+        :mac => wbench_hosts['leaf1']['mac']
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -238,7 +251,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => vm_mac['leaf2']
+        :mac => wbench_hosts['leaf2']['mac']
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',

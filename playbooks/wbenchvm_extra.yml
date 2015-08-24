@@ -3,4 +3,6 @@
     sudo: True
     tasks:
       - name: when vagrant up is done, log directly into cumulus user
-        lineinfile: dest=/home/vagrant/.bashrc line="sudo su - cumulus"
+        lineinfile:
+          dest=/home/vagrant/.bashrc
+          line="cd /home/cumulus;sudo su -- cumulus"
