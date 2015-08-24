@@ -139,7 +139,8 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac =>  wbench_hosts['spine2']['mac']
+        :mac => wbench_hosts[:wbench_hosts][:spine2][:mac]
+
     # swp17 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -190,7 +191,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => wbench_hosts['leaf1']['mac']
+        :mac => wbench_hosts[:wbench_hosts][:leaf1][:mac]
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -251,7 +252,7 @@ Vagrant.configure(2) do |config|
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
         :libvirt__network_name => 'switch_mgmt',
-        :mac => wbench_hosts['leaf2']['mac']
+        :mac => wbench_hosts[:wbench_hosts][:leaf2][:mac]
     # swp1s0 (eth1)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
