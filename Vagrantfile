@@ -300,7 +300,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :server1 do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 1536
+      domain.memory = 4000
+      domain.cpus = 7
     end
     node.vm.box = "centos7"
     # disabling sync folder support on all vms
@@ -331,7 +332,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :server2 do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 1536
+      domain.memory = 4000
+      domain.cpus = 7
     end
     node.vm.box = "centos7"
     # disabling sync folder support on all vms
