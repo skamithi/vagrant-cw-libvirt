@@ -1,0 +1,40 @@
+---
+- hosts: all
+  sudo: True
+  tasks:
+    - name: capture hostname into another variable
+      debug: msg={{ inventory_hostname }}
+      register: sw_hostname
+
+    - name: copy ssh key to root account
+      authorized_key: user=root key="{{ lookup('file', './deploy_key_id_rsa.pub') }}"
+
+  handlers:
+    - name: reboot switch vm
+      command: reboot
+
+
+- hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+      - name: wait for vm to come back online
+        local_action: wait_for port=22 host="{{ ansible_ssh_host }}" delay=10
+
+      - name: check if hostname is copied
+        debug: msg="{{ sw_hostname.msg }}"
+
+      - name: get the mac address of the first interface
+        shell: "virsh domiflist vagrant-cw-libvirt_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
+        register: virsh_output
+
+      - name: remove first interface
+        shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
+
+      - name: shutdown vm
+        shell:  "virsh destroy vagrant-cw-libvirt_{{ sw_hostname.msg }}"
+
+      - name: bring back up vm
+        shell: "virsh start vagrant-cw-libvirt_{{ sw_hostname.msg }}"
+
+
