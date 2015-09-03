@@ -45,6 +45,7 @@ Vagrant.configure(2) do |config|
   # for all VMs.
   config.vm.provider :libvirt do |domain|
     domain.nic_adapter_count = 20
+    domain.nested = true
   end
 
   config.vm.box = 'cumulus.253'
@@ -300,8 +301,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :server1 do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 4000
-      domain.cpus = 7
+      domain.memory = 1500
+      domain.cpus = 2
     end
     node.vm.box = "centos7"
     # disabling sync folder support on all vms
@@ -332,8 +333,8 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :server2 do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 4000
-      domain.cpus = 7
+      domain.memory = 1500
+      domain.cpus = 2
     end
     node.vm.box = "centos7"
     # disabling sync folder support on all vms

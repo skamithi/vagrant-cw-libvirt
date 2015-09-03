@@ -1,3 +1,4 @@
+#vim:ft=ansible:
 ---
 - hosts: all
   sudo: True
@@ -9,38 +10,64 @@
     - name: write the eth0 dhcp config. its missing for some reason
       copy: src=interface.eth0 dest=/etc/sysconfig/network-scripts/ifcfg-eth0
 
-    - name: update grub files on servers so virsh console works
-      copy: src=grub.default dest=/etc/default/grub
-
     - name: copy ssh key to root account
       authorized_key: user=root key="{{ lookup('file', './deploy_key_id_rsa.pub') }}"
 
-  handlers:
-    - name: reboot switch vm
-      command: reboot
+#    - name: run yum update
+#      shell: yum update -y
+
+    - name: stop network manager
+      shell: systemctl stop NetworkManager
+
+    - name: disable network manager
+      shell:  systemctl disable NetworkManager
+
+    - name: enable network services
+      shell: systemctl enable network
+
+#    - name: install rdo rpm
+#      shell: yum install -y https://rdoproject.org/repos/rdo-release.rpm
+#      ignore_errors: yes
+
+#    - name: install openstack-packstack
+#      shell: yum install -y openstack-packstack
+
+    - name: copy answer file
+      copy: src=packstack-answers.txt dest=/root/packstack-answers.txt
+
+    - name: update grub files on servers so virsh console works
+      copy: src=grub.default dest=/etc/default/grub
+
+    - name: restart grub
+      command: "grub2-mkconfig -o /boot/grub2/grub.cfg"
+
+    - name: wait for 20 seconds
+      wait_for: port=22 delay=10
+
+    - name: reboot the vm
+      shell: shutdown -r 1
 
 
-#- hosts: all
-#  connection: local
-#  gather_facts: false
-#  tasks:
-#      - name: wait for vm to come back online
-#        local_action: wait_for port=22 host="{{ ansible_ssh_host }}" delay=10
-#
-#      - name: check if hostname is copied
-#        debug: msg="{{ sw_hostname.msg }}"
-#
-#      - name: get the mac address of the first interface
-#        shell: "virsh domiflist vagrant-cw-libvirt_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
-#        register: virsh_output
-#
-#      - name: remove first interface
-#        shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
-#
-#      - name: shutdown vm
-#        shell:  "virsh destroy vagrant-cw-libvirt_{{ sw_hostname.msg }}"
-#
-#      - name: bring back up vm
-#        shell: "virsh start vagrant-cw-libvirt_{{ sw_hostname.msg }}"
-#
 
+- hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+      - name: wait for vm to come back online
+        local_action: wait_for port=22 host="{{ ansible_ssh_host }}" delay=60
+
+      - name: check if hostname is copied
+        debug: msg="{{ sw_hostname.msg }}"
+
+      - name: get the mac address of the first interface
+        shell: "virsh domiflist vagrant-cw-libvirt_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
+        register: virsh_output
+
+      - name: remove first interface
+        shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
+
+      - name: shutdown vm
+        shell:  "virsh destroy vagrant-cw-libvirt_{{ sw_hostname.msg }}"
+
+      - name: bring back up vm
+        shell: "virsh start vagrant-cw-libvirt_{{ sw_hostname.msg }}"
