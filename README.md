@@ -32,6 +32,11 @@ the spine and leaf switches, use ``virt-manager`` or ``virsh start``.
 Really wish vagrant supported vagrant up without requiring a working vagrant
 mgmt interface.
 
+## TODO
+
+* include stubs for cl-license and switchd so that cldemo playbooks work without
+  any modification
+
 ## LICENSE
 MIT
 
