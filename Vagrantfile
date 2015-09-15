@@ -17,7 +17,7 @@ sp2_swp50_leaf2 = [8018, 9018]
 sp2_swp51_leaf1 = [8007, 9007]
 sp2_swp52_leaf1 = [8008, 9008]
 sp2_swp50_leaf2 = [8009, 9009]
-sp2_swp51_leaf2 = [8010, 9010]
+#sp2_swp51_leaf2 = [8010, 9010]
 leaf1_swp17_leaf2 = [8011, 9011]
 leaf1_swp18_leaf2 = [8012, 9012]
 leaf1_swp32s0_svr1 = [8013, 9013]
@@ -55,7 +55,7 @@ Vagrant.configure(2) do |config|
     node.vm.provider :libvirt do |domain|
       domain.memory = 256
     end
-    node.vm.box = "trusty64_4"
+    node.vm.box = "trusty64"
     # disabling sync folder support on all VMs
     node.vm.synced_folder '.', '/vagrant', :disabled => true
 
