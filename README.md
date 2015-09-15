@@ -18,6 +18,7 @@ Reproduces a 2 spine/2 leaf/2 server cumulus workbench architecture
 
 ```
 $ git clone https://github.com/skamithi/vagrant-cw-libvirt
+$ cd vagrant-cw-libvirt
 $ git submodule init
 $ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
