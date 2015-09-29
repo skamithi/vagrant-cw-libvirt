@@ -30,6 +30,10 @@ $ vagrant ssh wbenchvm
 This should drop you straight into the wbenchvm as the cumulus user. For now
 only Ansible and puppet cldemos work.
 
+By default logging in as root to any other device in the topology from the wbenchvm, should just work.
+SSH key from wbenchvm cumulus user is copied to all managed VMs during the
+vagrant provisioning process. This is why the wbenchvm must be provisioned
+first.
 
 After installation, the leaf and spine switches cannot be controlled using
 vagrant up because the vagrant mgmt interface is deleted. To manage bringing up
