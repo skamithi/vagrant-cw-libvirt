@@ -1,0 +1,63 @@
+#!/bin/bash
+
+LICENSE_PATH=/etc/cumulus
+LICENSE_FILE=${LICENSE_PATH}/.license
+
+do_install() {
+  new="$1"
+
+  if [ -e $LICENSE_PATH ]; then
+    mkdir -p $LICENSE_PATH
+  fi
+
+  if [ "${new:0:5}" == "http:" -o "${new:0:4}" == "ftp:" ]; then
+    wget $new -O $LICENSE_FILE 2>/dev/null
+  else
+    echo $new > $LICENSE_FILE
+  fi
+}
+
+do_delete() {
+  if [ -e $LICENSE_FILE ]; then
+    rm $LICENSE_FILE
+  fi
+}
+
+do_print() {
+  if [ -e $LICENSE_FILE ]; then
+    cat $LICENSE_FILE
+  else
+    echo "No license file."
+    echo "No license installed!"
+    exit 20
+  fi
+}
+
+usage() {
+echo "Usage: /usr/cumulus/bin/cl-license (-i (license_file | URL) | -d)"
+echo "    -i  Install a license, via stdin, file, or URL."
+echo "    -d  Delete the current installed license."
+echo
+echo " cl-license prints, installs or deletes a license on this switch."
+}
+
+if [ $# -eq 0 ]; then
+  do_print
+else
+  while getopts "i:dh" OPT
+  do
+    case $OPT in
+      i)
+        do_install "$OPTARG"
+      ;;
+      d)
+        do_delete
+      ;;
+      *)
+        usage
+      ;;
+   esac
+  done
+fi
+
+exit 0

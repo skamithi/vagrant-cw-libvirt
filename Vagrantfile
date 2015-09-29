@@ -25,7 +25,7 @@ leaf1_swp32s1_svr2 = [8014, 9014]
 leaf2_swp32s0_svr2 = [8015, 9015]
 leaf2_swp32s1_svr1 = [8016, 9016]
 
-wbench_hostlist = [:spine1, :spine2, :leaf1, :leaf2]
+wbench_hostlist = [:spine1, :spine2, :leaf1, :leaf2, :server1, :server2]
 last_ip_octet = 100
 last_mac_octet = 11
 wbench_hosts = { :wbench_hosts => {} }
@@ -53,9 +53,9 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :wbenchvm do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 256
+      domain.memory = 512
     end
-    node.vm.box = "trusty64"
+    node.vm.box = "trusty64_4"
     # disabling sync folder support on all VMs
     node.vm.synced_folder '.', '/vagrant', :disabled => true
 
@@ -315,13 +315,13 @@ Vagrant.configure(2) do |config|
     # eth1
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
-      :libvirt__tunnel_port => leaf1_swp32s0_svr1[1],
-      :libvirt__tunnel_local_port => leaf1_swp32s0_svr1[0]
+      :libvirt__tunnel_port => leaf2_swp32s1_svr1[1],
+      :libvirt__tunnel_local_port => leaf2_swp32s1_svr1[0]
     # eth2
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
-      :libvirt__tunnel_port => leaf2_swp32s1_svr1[1],
-      :libvirt__tunnel_local_port => leaf2_swp32s1_svr1[0]
+      :libvirt__tunnel_port => leaf1_swp32s0_svr1[1],
+      :libvirt__tunnel_local_port => leaf1_swp32s0_svr1[0]
   end
 
   config.vm.define :server2 do |node|

@@ -2,10 +2,25 @@
   - hosts: all
     sudo: True
     tasks:
+      - name: change dhclient file to prevent resolv.conf updates
+        copy: src=wbench/dhclient.conf dest=/etc/dhcp/dhclient.conf
+
+      - name: overwrite resolv.conf pointing dns to itself
+        copy: src=wbench/resolv.conf dest=/etc/resolv.conf
+
+      - name: add topology.dot to /var/www
+        copy: src=wbench/topology.dot dest=/var/www/topology-clos-2lt22s.dot
+
+      - name: copy wbench.json to /var/www
+        copy: src=wbench/wbench.json dest=/var/www/wbench.json
+
       - name: when vagrant up is done, log directly into cumulus user
         lineinfile:
           dest=/home/vagrant/.bashrc
           line="cd /home/cumulus;sudo su -- cumulus"
+
+      - name: copy deploy ssh key to /var/www
+        command: cp /home/cumulus/.ssh/id_rsa.pub /var/www/authorized_keys
 
       - name: copy deploy ssh key to ansible server
         fetch:  src=/home/cumulus/.ssh/id_rsa.pub dest=./deploy_key_id_rsa.pub flat=yes

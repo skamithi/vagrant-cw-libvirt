@@ -1,0 +1,79 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          switchd
+# Required-Start:
+# Required-Stop:
+# Should-Start:
+# Should-Stop:
+# X-Start-Before
+# Default-Start:     S
+# Default-Stop:
+# Short-Description: Controls fake switchd process
+### END INIT INFO
+
+# Author: Kristian Van Der Vliet <kristian@cumulusnetworks.com>
+#
+# Please remove the "Author" lines above and replace them
+# with your own name if you copy and modify this script.
+
+PATH=/sbin:/bin:/usr/bin
+
+NAME=switchd
+SCRIPTNAME=/etc/init.d/$NAME
+PIDFILE=/var/run/switchd.pid
+
+. /lib/init/vars.sh
+. /lib/lsb/init-functions
+
+do_start() {
+  echo "[ ok ] Starting Cumulus Networks switch chip daemon: switchd"
+  /usr/sbin/switchd $PIDFILE 2>/dev/null &
+}
+
+do_stop() {
+  if [ -e $PIDFILE ];then
+    kill -TERM $(cat $PIDFILE)
+    rm $PIDFILE
+  fi
+}
+
+do_status() {
+  if [ -e $PIDFILE ];then
+    echo "[ ok ] switchd is running."
+  else
+    echo "[FAIL] switchd is not running ... failed!" >&2
+    exit 3
+  fi
+}
+
+case "$1" in
+  start|"")
+	log_action_begin_msg "Starting switchd"
+	do_start
+	log_action_end_msg 0
+	;;
+  stop)
+  log_action_begin_msg "Stopping switchd"
+  do_stop
+  log_action_end_msg 0
+  ;;
+  status)
+  do_status
+  ;;
+  restart)
+	log_action_begin_msg "Re-starting switchd"
+  do_stop
+	do_start
+	log_action_end_msg 0
+	;;
+  reload|force-reload)
+	echo "Error: argument '$1' not supported" >&2
+	exit 3
+	;;
+  *)
+	echo "Usage: $SCRIPTNAME [start|stop|restart|status]" >&2
+	exit 3
+	;;
+esac
+
+:

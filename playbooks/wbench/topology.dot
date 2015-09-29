@@ -1,0 +1,19 @@
+graph G {
+    graph [hostidtpye="hostname", version="1:0"];
+    "leaf1":"swp1s0" -> "spine1":"swp49";
+    "leaf1":"swp1s1" -> "spine1":"swp50";
+    "leaf1":"swp1s2" -> "spine2":"swp51";
+    "leaf1":"swp1s3" -> "spine2":"swp52";
+    "leaf1":"swp17"  -> "leaf2":"swp17";
+    "leaf1":"swp18"  -> "leaf2":"swp18";
+    "leaf1":"swp32s0" -> "server1":"eth2";
+    "leaf1":"swp32s1" -> "server2":"eth1";
+    "leaf2":"swp1s0" -> "spine2":"swp49";
+    "leaf2":"swp1s1" -> "spine2":"swp50";
+    "leaf2":"swp1s2" -> "spine1":"swp51";
+    "leaf2":"swp1s3" -> "spine1":"swp52";
+    "leaf2":"swp32s0" -> "server2":"eth2";
+    "leaf2":"swp32s1" -> "server1":"eth1";
+    "spine1":"swp17" -> "spine2":"swp17";
+    "spine1":"swp18" -> "spine2":"swp18";
+}

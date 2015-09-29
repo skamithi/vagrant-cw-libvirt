@@ -1,0 +1,18 @@
+#!/bin/bash
+PIDFILE=$1
+LICENSE_FILE=/etc/cumulus/.license
+RC=0
+
+# Make sure we weren't invoked with "-lic"
+if [ "$PIDFILE" == "-lic" ]; then
+  if [ ! -e $LICENSE_FILE ]; then
+    echo "No license file." >&2
+    RC=1
+  fi
+else
+  tail -f /dev/null & CPID=$!
+  echo -n $CPID > $PIDFILE
+  wait $CPID
+fi
+
+exit $RC

@@ -2,6 +2,9 @@
 - hosts: all
   sudo: True
   tasks:
+    - name: copy ssh key to root account
+      authorized_key: user=root key="{{ lookup('file', './deploy_key_id_rsa.pub') }}"
+
     - name: add updated renaming script to Vm
       copy: src=rename_eth_swp.new dest=/etc/init.d/rename_eth_swp mode=755
 
@@ -14,8 +17,24 @@
       debug: msg={{ inventory_hostname }}
       register: sw_hostname
 
-    - name: copy ssh key to root account
-      authorized_key: user=root key="{{ lookup('file', './deploy_key_id_rsa.pub') }}"
+    - name: copy fake license
+      copy: src=switch/cl-license dest=/usr/bin/cl-cl-license mode=755 owner=root
+
+    - name: copy fake ports.conf
+      copy: src=switch/ports.conf dest=/etc/cumulus/ports.conf
+
+    - name: copy fake switchd
+      copy:  src=switch/switchd dest=/usr/sbin/switchd mode=755 owner=root
+
+    - name: copy fake switchd.conf
+      copy: src=switch/switchd.conf dest=/etc/cumulus/switchd.conf mode=644 owner=root
+
+    - name: copy fake switchd init script
+      copy:  src=switch/switchd_init dest=/etc/init.d/switchd mode=755 owner=root
+
+    - name: add debian repository
+      apt_repository: repo="deb [arch=amd64] http://http.debian.net/debian wheezy  main contrib non-free" update_cache=yes
+
 
   handlers:
     - name: reboot switch vm
