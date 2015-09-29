@@ -6,7 +6,7 @@
 
 * Ubuntu 14.04 on Bare metal laptop/server
 * patched [libvirt with udp unicast support](https://launchpad.net/~linuxsimba/+archive/ubuntu/libvirt-udp-tunnel)
-* libvirt-vagrant (> 0.0.31)
+* libvirt-vagrant (> 0.0.31 - Available as of Sept 2015 on Rubygems)
 * Vagrant (of cause!)
 
 ## Topology
@@ -24,19 +24,26 @@ $ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
 $ vagrant box add http://linuxsimba.com/vagrantbox/cumulus-253.box --name cumulus.253
 $ vagrant up --no-parallel
+$ vagrant ssh wbenchvm
 ```
+
+This should drop you straight into the wbenchvm as the cumulus user. For now
+only Ansible and puppet cldemos work.
+
 
 After installation, the leaf and spine switches cannot be controlled using
 vagrant up because the vagrant mgmt interface is deleted. To manage bringing up
 the spine and leaf switches, use ``virt-manager`` or ``virsh start``.
+
 
 Really wish vagrant supported vagrant up without requiring a working vagrant
 mgmt interface.
 
 ## TODO
 
-* include stubs for cl-license and switchd so that cldemo playbooks work without
-  any modification
+* Write ZTP reset scripts.
+* Write script to simulate ``vagrant up`` on switches after switches lose their
+Vagrant managed interface.
 
 ## LICENSE
 MIT
