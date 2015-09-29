@@ -53,7 +53,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.define :wbenchvm do |node|
     node.vm.provider :libvirt do |domain|
-      domain.memory = 512
+      domain.memory = 1024
     end
     node.vm.box = "trusty64_4"
     # disabling sync folder support on all VMs
