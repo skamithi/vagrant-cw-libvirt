@@ -32,6 +32,12 @@
     - name: copy fake switchd init script
       copy:  src=switch/switchd_init dest=/etc/init.d/switchd mode=755 owner=root
 
+    - name: create cumulus bin directory
+      file: path=/usr/cumulus/bin state=directory
+
+    - name: add fake cl-license
+      copy: src=switch/cl-license dest=/usr/cumulus/bin/cl-license mode=755 owner=root
+
     - name: add debian repository
       apt_repository: repo="deb [arch=amd64] http://http.debian.net/debian wheezy  main contrib non-free" update_cache=yes
 
