@@ -2,9 +2,18 @@
 # vi: set ft=ruby :
 #
 #
+require 'json'
+
+### CHECK THIS CONFIG BEFORE RUNNING VAGRANT UP
+### RUN vagrant box list AND CHECK BOX NAMES ARE CORRECT
+### THIS VAGRANTFILE ONLY WORKS WITH THE LIBVIRT PROVIDER
+### CONFIGURE BOX NAMES
+server_box_name = "trusty64"
+cumulus_box_name = "cumulus.253"
+###################################################
+
 # udp port mappings. Messy. Can be simplified
 # with some graph action..maybe using ruby-graphviz?
-require 'json'
 
 sp1_swp17_sp2 = [8000, 9000]
 sp1_swp18_sp2 = [8001, 9001]
@@ -30,6 +39,7 @@ last_ip_octet = 100
 last_mac_octet = 11
 wbench_hosts = { :wbench_hosts => {} }
 
+
 wbench_hostlist.each do |hostentry|
   wbench_hosts[:wbench_hosts][hostentry] = {
     :ip => '192.168.0.' + last_ip_octet.to_s,
@@ -47,7 +57,7 @@ Vagrant.configure(2) do |config|
     domain.nic_adapter_count = 20
   end
 
-  config.vm.box = 'cumulus.253'
+  config.vm.box = cumulus_box_name
   # vagrant issues #1673..fixes hang with configure_networks
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
@@ -302,7 +312,7 @@ Vagrant.configure(2) do |config|
     node.vm.provider :libvirt do |domain|
       domain.memory = 256
     end
-    node.vm.box = "trusty64"
+    node.vm.box = server_box_name
     # disabling sync folder support on all vms
     node.vm.hostname = 'server1'
     node.vm.synced_folder '.', '/vagrant', :disabled => true
@@ -328,7 +338,7 @@ Vagrant.configure(2) do |config|
     node.vm.provider :libvirt do |domain|
       domain.memory = 256
     end
-    node.vm.box = "trusty64"
+    node.vm.box = server_box_name
     # disabling sync folder support on all vms
     node.vm.hostname = 'server2'
     node.vm.synced_folder '.', '/vagrant', :disabled => true
