@@ -22,5 +22,8 @@
       - name: copy deploy ssh key to /var/www
         command: cp /home/cumulus/.ssh/id_rsa.pub /var/www/authorized_keys
 
+      - name: copy ztp restart script
+        copy: src=wbench/clear_ztp_all_switches.sh.file dest=/home/cumulus/clear_ztp_all_switches.sh mode=700 owner=cumulus
+
       - name: copy deploy ssh key to ansible server
         fetch:  src=/home/cumulus/.ssh/id_rsa.pub dest=./deploy_key_id_rsa.pub flat=yes

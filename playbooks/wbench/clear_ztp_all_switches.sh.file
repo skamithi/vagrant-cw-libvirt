@@ -1,0 +1,16 @@
+#!/bin/bash
+
+## This script resets ZTP on the Cumulus Linux VMs.
+## Reset process involves deleting the autoprovision.conf file
+## Then rebooting the VM
+SWITCHES=(leaf1 leaf2 spine1 spine2)
+
+for i in ${SWITCHES[@]}; do
+  echo "------------"
+  echo "In $i switch"
+  echo "------------"
+  echo "Reset ZTP"
+  ssh root@$i rm /var/lib/cumulus/autoprovision.conf
+  echo "Reboot Switch"
+  ssh root@$i reboot
+done
