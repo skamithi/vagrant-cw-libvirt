@@ -89,7 +89,7 @@ $ virsh pool-start default
 $ vagrant ssh wbenchvm
 ```
 
-* Install Ansible ospf demo
+* Install Ansible OSPF demo
 
 ```
 cumulus@wbench:~$ apt-cache search cldemo | grep ansible
@@ -106,7 +106,7 @@ cumulus@wbench:~$ sudo apt-get install cldemo-wbench-ospfunnum-ansible
 
 ```
 
-*  Get the switches to re-run ZTP and rerun ZTP. Got a script to do this.
+*  Get the switches to re-run ZTP. Got a script to do this.
 ```
 cumulus@wbench:~$ $HOME/clear_ztp_all_switches.sh
 ```
