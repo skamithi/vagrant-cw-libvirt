@@ -7,6 +7,7 @@
 * Ubuntu 14.04 on Bare metal laptop/server
 * patched [libvirt with udp unicast support](https://launchpad.net/~linuxsimba/+archive/ubuntu/libvirt-udp-tunnel)
 * libvirt-vagrant (> 0.0.31 - Available as of Sept 2015 on Rubygems)
+* cumulus vagrant plugin - see installation notes.
 * Vagrant (of cause!)
 * 40GB Available Disk Space
 * 4GB of Available RAM.
@@ -20,8 +21,11 @@ Reproduces a 2 spine/2 leaf/2 server cumulus workbench architecture
 
 Run the following steps to get the setup going. Its important to run ``vagrant up`` in a non parallel mode. Bringing up multiple virtual machines simultaneously in libvirt is brittle. So best to leave that feature off for now.
 ```
+$ apt-get install libvirt-dev (recommended in case libvirt-vagrant needs to compile)
 $ git clone https://github.com/skamithi/vagrant-cw-libvirt
 $ cd vagrant-cw-libvirt
+$ vagrant plugin install libvirt-vagrant
+$ vagrant plugin install cumulus-vagrant
 $ git submodule init
 $ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
@@ -137,6 +141,13 @@ spine2 | 58    | 53     | 5
 
 ```
 
+* Log into a switch and investigate the switching and routing. Let's look at leaf1
+```
+# ssh root@leaf1
+root@leaf1# apt-get install netshow
+root@leaf1# netshow int
+root@leaf1# cl-ospf show route
+```
 ### Puppet OSPF Unnumbered Demo
 
 
