@@ -2,6 +2,7 @@
 
 **(not supported by Cumulus Networks)**
 
+
 ## Requirements
 
 * Ubuntu 14.04 on Bare metal laptop/server
@@ -85,6 +86,8 @@ $ virsh pool-start default
 
 
 ## EXAMPLE USING A CLDEMO
+
+_demos are broken - Oct 16 2015. Fix/Review under investigation_
 
 ### Ansible OSPF Unnumbered Demo
 
