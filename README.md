@@ -84,10 +84,8 @@ $ virsh pool-start default
 
 
 
+## EXAMPLES
 
-## EXAMPLE USING A CLDEMO
-
-_demos are broken - Oct 16 2015. Fix/Review under investigation_
 
 ### Ansible OSPF Unnumbered Demo
 
