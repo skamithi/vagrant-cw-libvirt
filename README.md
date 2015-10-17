@@ -148,8 +148,92 @@ spine2 | 58    | 53     | 5
 ```
 # ssh root@leaf1
 root@leaf1# apt-get install netshow
-root@leaf1# netshow int
-root@leaf1# cl-ospf show route
+root@leaf1:~# netshow int
+--------------------------------------------------------------------
+To view the legend,  rerun "netshow" cmd with the  "--legend" option
+--------------------------------------------------------------------
+    Name     Speed       MTU    Mode          Summary
+--  -------  ----------  -----  ------------  -------------------------------------
+UP  br0      N/A         1500   Bridge/L3     IP: 10.4.1.1/25
+                                              Untagged Members: swp32s0
+                                              802.1q Tag: Untagged
+                                              STP: RootSwitch(32768)
+UP  br1      N/A         1500   Bridge/L3     IP: 10.4.1.129/25
+                                              Untagged Members: swp32s1
+                                              802.1q Tag: Untagged
+                                              STP: RootSwitch(32768)
+UP  eth0     10G         1500   Mgmt          IP: 192.168.0.102/24
+UP  lo       N/A         16436  Mgmt          IP: 127.0.0.1/8, 10.2.1.1/32, ::1/128
+UP  swp1s0   10G(4x10G)  1500   Interface/L3  IP: 10.2.1.1/32
+UP  swp1s1   10G(4x10G)  1500   Interface/L3  IP: 10.2.1.1/32
+UP  swp1s2   10G(4x10G)  1500   Interface/L3  IP: 10.2.1.1/32
+UP  swp1s3   10G(4x10G)  1500   Interface/L3  IP: 10.2.1.1/32
+UP  swp32s0  10G(4x10G)  1500   Access/L2     Untagged: br0
+UP  swp32s1  10G(4x10G)  1500   Access/L2     Untagged: br1
+
+
+root@leaf1# cl-ospf route show OR vtysh -c show ip route
+root@leaf1:~# cl-ospf route show
+============ OSPF network routing table ============
+N    10.2.1.1/32           [4000] area: 0.0.0.0
+                           directly attached to lo
+N    10.2.1.2/32           [12000] area: 0.0.0.0
+                           via 10.2.1.3, swp1s0
+                           via 10.2.1.3, swp1s1
+                           via 10.2.1.4, swp1s2
+                           via 10.2.1.4, swp1s3
+N    10.2.1.3/32           [8000] area: 0.0.0.0
+                           via 10.2.1.3, swp1s0
+                           via 10.2.1.3, swp1s1
+N    10.2.1.4/32           [8000] area: 0.0.0.0
+                           via 10.2.1.4, swp1s2
+                           via 10.2.1.4, swp1s3
+N    10.4.1.0/25           [4000] area: 0.0.0.0
+                           directly attached to br0
+N    10.4.1.128/25         [4000] area: 0.0.0.0
+                           directly attached to br1
+N    10.4.2.0/25           [12000] area: 0.0.0.0
+                           via 10.2.1.3, swp1s0
+                           via 10.2.1.3, swp1s1
+                           via 10.2.1.4, swp1s2
+                           via 10.2.1.4, swp1s3
+N    10.4.2.128/25         [12000] area: 0.0.0.0
+                           via 10.2.1.3, swp1s0
+                           via 10.2.1.3, swp1s1
+                           via 10.2.1.4, swp1s2
+                           via 10.2.1.4, swp1s3
+
+============ OSPF router routing table =============
+
+============ OSPF external routing table ===========
+
+
+root@leaf1:~# ip route show
+default via 192.168.0.1 dev eth0 
+10.2.1.2  proto zebra  metric 20 
+	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
+	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
+10.2.1.3  proto zebra  metric 20 
+	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
+	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
+10.2.1.4  proto zebra  metric 20 
+	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
+10.4.1.0/25 dev br0  proto kernel  scope link  src 10.4.1.1 
+10.4.1.128/25 dev br1  proto kernel  scope link  src 10.4.1.129 
+10.4.2.0/25  proto zebra  metric 20 
+	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
+	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
+10.4.2.128/25  proto zebra  metric 20 
+	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
+	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
+192.168.0.0/24 dev eth0  proto kernel  scope link  src 192.168.0.102 
 ```
 ### Puppet OSPF Unnumbered Demo
 
