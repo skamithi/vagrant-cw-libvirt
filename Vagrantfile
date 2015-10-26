@@ -65,7 +65,7 @@ Vagrant.configure(2) do |config|
     node.vm.provider :libvirt do |domain|
       domain.memory = 1024
     end
-    node.vm.box = "trusty64_4"
+    node.vm.box = server_box_name
     # disabling sync folder support on all VMs
     node.vm.synced_folder '.', '/vagrant', :disabled => true
 
