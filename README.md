@@ -25,8 +25,8 @@ Run the following steps to get the setup going. Its important to run ``vagrant u
 $ apt-get install libvirt-dev (recommended in case libvirt-vagrant needs to compile)
 $ git clone https://github.com/skamithi/vagrant-cw-libvirt
 $ cd vagrant-cw-libvirt
-$ vagrant plugin install libvirt-vagrant
-$ vagrant plugin install cumulus-vagrant
+$ vagrant plugin install vagrant-libvirt
+$ vagrant plugin install vagrant-cumulus
 $ git submodule init
 $ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
