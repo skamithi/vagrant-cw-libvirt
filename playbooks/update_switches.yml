@@ -67,7 +67,7 @@
         register: virsh_output
 
       - name: remove first interface
-        shell: "virsh detach-interface --domain {{ vm_prefix.stdout_lines[0] }}_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }}"
+        shell: "virsh detach-interface --domain {{ vm_prefix.stdout_lines[0] }}_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
 
       - name: shutdown vm
         shell:  "virsh destroy {{ vm_prefix.stdout_lines[0]}}_{{ sw_hostname.msg }}"
