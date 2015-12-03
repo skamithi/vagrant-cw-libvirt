@@ -51,6 +51,10 @@
   connection: local
   gather_facts: false
   tasks:
+      - name: get directory name where ansible was executed. this matches prefix of VM
+        shell: "pwd | awk 'BEGIN { FS=\"/\" } {print $(NF-1)}'"
+        register: vm_prefix
+
       - name: wait for vm to come back online
         local_action: wait_for port=22 host="{{ ansible_ssh_host }}" delay=10
         when: eth_remap.changed == True
@@ -59,16 +63,16 @@
         debug: msg="{{ sw_hostname.msg }}"
 
       - name: get the mac address of the first interface
-        shell: "virsh domiflist vagrant-cw-libvirt_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
+        shell: "virsh domiflist {{ vm_prefix.stdout_lines[0]}}_{{ sw_hostname.msg }}  | awk '/vagrant-libvirt/ {print $5}'"
         register: virsh_output
 
       - name: remove first interface
-        shell: "virsh detach-interface --domain vagrant-cw-libvirt_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }} --config"
+        shell: "virsh detach-interface --domain {{ vm_prefix.stdout_lines[0] }}_{{ sw_hostname.msg }} --type network --mac {{ virsh_output.stdout }}"
 
       - name: shutdown vm
-        shell:  "virsh destroy vagrant-cw-libvirt_{{ sw_hostname.msg }}"
+        shell:  "virsh destroy {{ vm_prefix.stdout_lines[0]}}_{{ sw_hostname.msg }}"
 
       - name: bring back up vm
-        shell: "virsh start vagrant-cw-libvirt_{{ sw_hostname.msg }}"
+        shell: "virsh start  {{ vm_prefix.stdout_lines[0]}}_{{ sw_hostname.msg }}"
 
 
