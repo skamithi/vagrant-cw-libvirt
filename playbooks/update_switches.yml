@@ -38,8 +38,17 @@
     - name: add fake cl-license
       copy: src=switch/cl-license dest=/usr/cumulus/bin/cl-license mode=755 owner=root
 
-    - name: add debian repository
-      apt_repository: repo="deb [arch=amd64] http://http.debian.net/debian wheezy  main contrib non-free" update_cache=yes
+#    - name: add netshow private repo key
+#      apt_key: url=http://lab.dianni.com:8080/lab.dianni.com.gpg.key
+
+#    - name: add debian and netshow repo
+#      apt_repository: repo="{{item}}" update_cache=yes
+#      with_items:
+#         - "deb [arch=amd64] http://http.debian.net/debian wheezy  main contrib non-free"
+#         - "deb [arch=amd64] http://lab.dianni.com:8080 testing main"
+
+#    - name: install netshow
+#      apt: name='netshow' default_release='testing'
 
 
   handlers:
