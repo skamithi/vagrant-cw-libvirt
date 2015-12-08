@@ -103,34 +103,42 @@ Vagrant.configure(2) do |config|
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp17_sp2[0],
-      :libvirt__tunnel_local_port =>  sp1_swp17_sp2[1]
+      :libvirt__tunnel_local_port =>  sp1_swp17_sp2[1],
+      :libvirt__iface_name => 'swp17'
     # swp18 (eth2)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp18_sp2[0],
-      :libvirt__tunnel_local_port => sp1_swp18_sp2[1]
+      :libvirt__tunnel_local_port => sp1_swp18_sp2[1],
+      :libvirt__iface_name => 'swp18'
     # swp49 (eth3)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp49_leaf1[0],
-      :libvirt__tunnel_local_port => sp1_swp49_leaf1[1]
+      :libvirt__tunnel_local_port => sp1_swp49_leaf1[1],
+      :libvirt__iface_name => 'swp49'
 
     # swp50 (eth4)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp50_leaf1[0],
-      :libvirt__tunnel_local_port => sp1_swp50_leaf1[1]
+      :libvirt__tunnel_local_port => sp1_swp50_leaf1[1],
+      :libvirt__iface_name => 'swp50'
 
     # swp51 (eth5)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp51_leaf2[0],
-      :libvirt__tunnel_local_port => sp1_swp51_leaf2[1]
+      :libvirt__tunnel_local_port => sp1_swp51_leaf2[1],
+      :libvirt__iface_name => 'swp51'
+
     # swp52 (eth6)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp52_leaf2[0],
-      :libvirt__tunnel_local_port => sp1_swp52_leaf2[1]
+      :libvirt__tunnel_local_port => sp1_swp52_leaf2[1],
+      :libvirt__iface_name => 'swp52'
+
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/update_switches.yml'
     end
@@ -155,34 +163,40 @@ Vagrant.configure(2) do |config|
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp17_sp2[1],
-      :libvirt__tunnel_local_port =>  sp1_swp17_sp2[0]
+      :libvirt__tunnel_local_port =>  sp1_swp17_sp2[0],
+      :libvirt__iface_name => 'swp17'
     # swp18 (eth2)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp18_sp2[1],
-      :libvirt__tunnel_local_port => sp1_swp18_sp2[0]
+      :libvirt__tunnel_local_port => sp1_swp18_sp2[0],
+      :libvirt__iface_name => 'swp18'
+
     # swp49 (eth3)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp49_leaf2[0],
-      :libvirt__tunnel_local_port => sp2_swp49_leaf2[1]
+      :libvirt__tunnel_local_port => sp2_swp49_leaf2[1],
+      :libvirt__iface_name => 'swp49'
 
     # swp50 (eth4)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp50_leaf2[0],
-      :libvirt__tunnel_local_port => sp2_swp50_leaf2[1]
-
+      :libvirt__tunnel_local_port => sp2_swp50_leaf2[1],
+      :libvirt__iface_name => 'swp50'
     # swp51 (eth5)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp51_leaf1[0],
-      :libvirt__tunnel_local_port => sp2_swp51_leaf1[1]
+      :libvirt__tunnel_local_port => sp2_swp51_leaf1[1],
+      :libvirt__iface_name => 'swp51'
     # swp52 (eth6)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp52_leaf1[0],
-      :libvirt__tunnel_local_port => sp2_swp52_leaf1[1]
+      :libvirt__tunnel_local_port => sp2_swp52_leaf1[1],
+      :libvirt__iface_name => 'swp52'
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/update_switches.yml'
     end
@@ -206,44 +220,50 @@ Vagrant.configure(2) do |config|
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp49_leaf1[1],
-      :libvirt__tunnel_local_port => sp1_swp49_leaf1[0]
+      :libvirt__tunnel_local_port => sp1_swp49_leaf1[0],
+      :libvirt__iface_name => 'swp1s0'
     # swp1s1 (eth2)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp50_leaf1[1],
-      :libvirt__tunnel_local_port => sp1_swp50_leaf1[0]
+      :libvirt__tunnel_local_port => sp1_swp50_leaf1[0],
+      :libvirt__iface_name => 'swp1s1'
     # swp1s2 (eth3)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp51_leaf1[1],
-      :libvirt__tunnel_local_port => sp2_swp51_leaf1[0]
-
+      :libvirt__tunnel_local_port => sp2_swp51_leaf1[0],
+      :libvirt__iface_name => 'swp1s2'
     # swps1s3 (eth4)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp52_leaf1[1],
-      :libvirt__tunnel_local_port => sp2_swp52_leaf1[0]
-
+      :libvirt__tunnel_local_port => sp2_swp52_leaf1[0],
+      :libvirt__iface_name => 'swp1s3'
     # swp17 (eth5)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp17_leaf2[0],
-      :libvirt__tunnel_local_port => leaf1_swp17_leaf2[1]
+      :libvirt__tunnel_local_port => leaf1_swp17_leaf2[1],
+      :libvirt__iface_name => 'swp17'
     # swp18 (eth6)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp18_leaf2[0],
-      :libvirt__tunnel_local_port => leaf1_swp18_leaf2[1]
+      :libvirt__tunnel_local_port => leaf1_swp18_leaf2[1],
+      :libvirt_iface_name => 'swp18'
     # swp32s0 (eth7)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp32s0_svr1[0],
-      :libvirt__tunnel_local_port => leaf1_swp32s0_svr1[1]
+      :libvirt__tunnel_local_port => leaf1_swp32s0_svr1[1],
+      :libvirt_iface_name => 'swp32s0'
     # swp32s1 (eth8)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp32s1_svr2[0],
-      :libvirt__tunnel_local_port => leaf1_swp32s1_svr2[1]
+      :libvirt__tunnel_local_port => leaf1_swp32s1_svr2[1],
+      :libvirt__iface_name => 'swp32s1'
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/update_switches.yml'
     end
@@ -267,33 +287,38 @@ Vagrant.configure(2) do |config|
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp49_leaf2[1],
-      :libvirt__tunnel_local_port => sp2_swp49_leaf2[0]
+      :libvirt__tunnel_local_port => sp2_swp49_leaf2[0],
+      :libvirt__iface_name => 'swp1s0'
     # swp1s1 (eth2)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp2_swp50_leaf2[1],
-      :libvirt__tunnel_local_port => sp2_swp50_leaf2[0]
+      :libvirt__tunnel_local_port => sp2_swp50_leaf2[0],
+      :libvirt__iface_name => 'swp1s1'
     # swp1s2 (eth3)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp51_leaf2[1],
-      :libvirt__tunnel_local_port => sp1_swp51_leaf2[0]
+      :libvirt__tunnel_local_port => sp1_swp51_leaf2[0],
+      :libvirt__iface_name => 'swp1s2'
     # swps1s3 (eth4)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => sp1_swp52_leaf2[1],
-      :libvirt__tunnel_local_port => sp1_swp52_leaf2[0]
-
+      :libvirt__tunnel_local_port => sp1_swp52_leaf2[0],
+      :libvirt__iface_name => 'swp1s3'
     # swp17 (eth5)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp17_leaf2[1],
-      :libvirt__tunnel_local_port => leaf1_swp17_leaf2[0]
+      :libvirt__tunnel_local_port => leaf1_swp17_leaf2[0],
+      :libvirt__iface_name => 'swp17'
     # swp18 (eth6)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp18_leaf2[1],
-      :libvirt__tunnel_local_port => leaf1_swp18_leaf2[0]
+      :libvirt__tunnel_local_port => leaf1_swp18_leaf2[0],
+      :libvirt__iface_name => 'swp18'
     # swp32s0 (eth7)
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
