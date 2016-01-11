@@ -20,9 +20,19 @@ Reproduces a 2 spine/2 leaf/2 server cumulus workbench architecture
 
 ## Installation
 
-Run the following steps to get the setup going. Its important to run ``vagrant up`` in a non parallel mode. Bringing up multiple virtual machines simultaneously in libvirt is brittle. So best to leave that feature off for now.
+Run the following steps to get the setup going. Its important to run ``vagrant up`` in a non parallel mode because the wbenchvm must come up first.
+
+Install libvirt with [libvirt with udp unicast support](https://launchpad.net/~linuxsimba/+archive/ubuntu/libvirt-udp-tunnel)
+if not installed
 ```
-$ apt-get install libvirt-dev (recommended in case libvirt-vagrant needs to compile)
+$ sudo add-apt-repository ppa:linuxsimba/libvirt-udp-tunnel
+$ sudo apt-get upgrade
+$ sudo apt-get install libvirt-bin libvirt-dev
+
+```
+
+
+```
 $ git clone https://github.com/skamithi/vagrant-cw-libvirt
 $ cd vagrant-cw-libvirt
 $ vagrant plugin install vagrant-libvirt
@@ -207,31 +217,31 @@ N    10.4.2.128/25         [12000] area: 0.0.0.0
 
 
 root@leaf1:~# ip route show
-default via 192.168.0.1 dev eth0 
-10.2.1.2  proto zebra  metric 20 
+default via 192.168.0.1 dev eth0
+10.2.1.2  proto zebra  metric 20
 	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
 	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
 	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
 	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
-10.2.1.3  proto zebra  metric 20 
+10.2.1.3  proto zebra  metric 20
 	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
 	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
-10.2.1.4  proto zebra  metric 20 
+10.2.1.4  proto zebra  metric 20
 	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
 	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
-10.4.1.0/25 dev br0  proto kernel  scope link  src 10.4.1.1 
-10.4.1.128/25 dev br1  proto kernel  scope link  src 10.4.1.129 
-10.4.2.0/25  proto zebra  metric 20 
-	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
-	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
-	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
-	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
-10.4.2.128/25  proto zebra  metric 20 
+10.4.1.0/25 dev br0  proto kernel  scope link  src 10.4.1.1
+10.4.1.128/25 dev br1  proto kernel  scope link  src 10.4.1.129
+10.4.2.0/25  proto zebra  metric 20
 	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
 	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
 	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
 	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
-192.168.0.0/24 dev eth0  proto kernel  scope link  src 192.168.0.102 
+10.4.2.128/25  proto zebra  metric 20
+	nexthop via 10.2.1.3  dev swp1s0 weight 1 onlink
+	nexthop via 10.2.1.3  dev swp1s1 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s2 weight 1 onlink
+	nexthop via 10.2.1.4  dev swp1s3 weight 1 onlink
+192.168.0.0/24 dev eth0  proto kernel  scope link  src 192.168.0.102
 ```
 ### Puppet OSPF Unnumbered Demo
 
