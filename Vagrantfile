@@ -78,6 +78,7 @@ Vagrant.configure(2) do |config|
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'ccw-wbenchvm-ansible/site.yml'
       ansible.extra_vars = wbench_hosts
+      ansible.force_remote_user = false
     end
     node.vm.provision :ansible do |ansible|
       ansible.playbook = 'playbooks/wbenchvm_extra.yml'
