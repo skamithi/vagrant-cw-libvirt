@@ -9,7 +9,7 @@
 * patched [libvirt with udp unicast support](https://launchpad.net/~linuxsimba/+archive/ubuntu/libvirt-udp-tunnel)
 * libvirt-vagrant (> 0.0.31 - Available as of Sept 2015 on Rubygems)
 * cumulus vagrant plugin - see installation notes.
-* Vagrant (of cause!)
+* Vagrant 1.7.X and 1.8.X
 * Ansible 1.9.X. Not tested with Ansible 2.0
 * 40GB Available Disk Space
 * 4GB of Available RAM.
