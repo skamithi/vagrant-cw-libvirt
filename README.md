@@ -42,7 +42,7 @@ $ git submodule init
 $ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
 $ vagrant box add http://linuxsimba.com/vagrantbox/cumulus-253.box --name cumulus.253
-$ vagrant up --no-parallel
+$ vagrant up --no-parallel --provider libvirt
 $ vagrant ssh wbenchvm
 ```
 
