@@ -10,6 +10,7 @@
 * libvirt-vagrant (> 0.0.31 - Available as of Sept 2015 on Rubygems)
 * cumulus vagrant plugin - see installation notes.
 * Vagrant (of cause!)
+* Ansible 1.9.X. Not tested with Ansible 2.0
 * 40GB Available Disk Space
 * 4GB of Available RAM.
 
