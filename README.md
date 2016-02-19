@@ -34,12 +34,10 @@ $ sudo apt-get install libvirt-bin libvirt-dev
 
 
 ```
-$ git clone https://github.com/skamithi/vagrant-cw-libvirt
+$ git clone https://github.com/skamithi/vagrant-cw-libvirt --recursive
 $ cd vagrant-cw-libvirt
 $ vagrant plugin install vagrant-libvirt
 $ vagrant plugin install vagrant-cumulus
-$ git submodule init
-$ git submodule update
 $ vagrant box add http://linuxsimba.com/vagrantbox/ubuntu-trusty.box --name trusty64
 $ vagrant box add http://linuxsimba.com/vagrantbox/cumulus-253.box --name cumulus.253
 $ vagrant up --no-parallel --provider libvirt
