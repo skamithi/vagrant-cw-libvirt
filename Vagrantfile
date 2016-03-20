@@ -8,7 +8,7 @@ require 'json'
 ### RUN vagrant box list AND CHECK BOX NAMES ARE CORRECT
 ### THIS VAGRANTFILE ONLY WORKS WITH THE LIBVIRT PROVIDER
 ### CONFIGURE BOX NAMES
-server_box_name = "trusty64"
+server_box_name = "trusty64_4"
 cumulus_box_name = "cumulus.253"
 ###################################################
 
@@ -322,7 +322,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => wbench_hosts[:wbench_hosts][:server1][:mac]
     # eth1
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -333,6 +334,10 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf1_swp32s0_svr1[1],
       :libvirt__tunnel_local_port => leaf1_swp32s0_svr1[0]
+    node.vm.provision :ansible do |ansible|
+      ansible.playbook = 'playbooks/update_servers.yml'
+    end
+
   end
 
   config.vm.define :server2 do |node|
@@ -348,7 +353,8 @@ Vagrant.configure(2) do |config|
         :auto_config => false,
         :libvirt__forward_mode => 'veryisolated',
         :libvirt__dhcp_enabled => false,
-        :libvirt__network_name => 'switch_mgmt'
+        :libvirt__network_name => 'switch_mgmt',
+        :mac => wbench_hosts[:wbench_hosts][:server2][:mac]
     # eth1
     node.vm.network :private_network,
       :libvirt__tunnel_type => 'udp',
@@ -359,5 +365,8 @@ Vagrant.configure(2) do |config|
       :libvirt__tunnel_type => 'udp',
       :libvirt__tunnel_port => leaf2_swp32s0_svr2[1],
       :libvirt__tunnel_local_port => leaf2_swp32s0_svr2[0]
+    node.vm.provision :ansible do |ansible|
+      ansible.playbook = 'playbooks/update_servers.yml'
+    end
   end
 end
